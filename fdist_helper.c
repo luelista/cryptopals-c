@@ -1,4 +1,6 @@
-#import <math.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
 float fdist_dev(unsigned char* data, unsigned char* fdist_comp, size_t data_len) {
 	unsigned int fdist_out[256];
@@ -16,6 +18,21 @@ float fdist_dev(unsigned char* data, unsigned char* fdist_comp, size_t data_len)
 		fdev += fabsf(fa-fb);
 	}
 	return fdev;
+}
+
+#define ROUND_UP(x, y) ((x) + ((y) - (x) % (y)) % (y))
+
+#define BITCOUNT(i) ( ((i>>7)&1)+((i>>6)&1)+((i>>5)&1)+((i>>4)&1)+((i>>3)&1)+((i>>2)&1)+((i>>1)&1)+(i&1) )
+unsigned int hamming(unsigned char* a, unsigned char* b, size_t length) {
+	unsigned int c = 0;
+	unsigned char x;
+	while (length --> 0) {
+		x = (unsigned char) (*a ^ *b);
+		c += BITCOUNT(x);
+		//printf("%c %c %02x %02x %02x  %d\n", *a, *b, *a, *b, x, c);
+		a++; b++;
+	}
+	return c;
 }
 
 /*

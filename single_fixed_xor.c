@@ -5,40 +5,8 @@
 #include "convlib.c"
 #include "fdist_helper.c"
 
-void fixed_xor(unsigned char* src, unsigned char* dst, unsigned char xor_key, size_t length) {
-	while(length --> 0) {
-		*(dst++) = *(src++) ^ xor_key;
-	}
-}
 
-#define HEX 1
-#define RAW 2
-#define STRING 0
 
-void printout(unsigned char style, unsigned char* data, size_t dlen) {
-	char *prnbuf;
-	switch(style) {
-		case RAW:
-			write(1, data, dlen);
-			break;
-		case HEX:
-			prnbuf = (char*) malloc(dlen*2);
-			bin2hex(data, prnbuf, dlen);
-			puts(prnbuf);
-			free(prnbuf);
-			break;
-		case STRING:
-			for(int i = 0; i<dlen; i++) {
-				if (*data < 32 || *data > 126) {
-					printf("\\x%02X", *data);
-				} else {
-					putchar(*data);
-				}
-				data++;
-			}
-			break;
-	}
-}
 
 int main(int argc, char** argv) {
 	unsigned char key = 0, crack = 0, outstyle = STRING;

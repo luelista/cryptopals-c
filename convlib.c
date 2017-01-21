@@ -60,6 +60,50 @@ void bin2base64(char* src, char* dst, ssize_t input_length) {
 }
 
 
+#define HEX 1
+#define RAW 2
+#define STRING 0
+void printout(unsigned char style, unsigned char* data, size_t dlen) {
+	char *prnbuf;
+	switch(style) {
+		case RAW:
+			write(1, data, dlen);
+			break;
+		case HEX:
+			prnbuf = (char*) malloc(dlen*2);
+			bin2hex(data, prnbuf, dlen);
+			puts(prnbuf);
+			free(prnbuf);
+			break;
+		case STRING:
+			for(int i = 0; i<dlen; i++) {
+				if (*data < 32 || *data > 126) {
+					printf("\\x%02X", *data);
+				} else {
+					putchar(*data);
+				}
+				data++;
+			}
+			break;
+	}
+}
+
+void printmatrix(unsigned char* data, int width, int dlen) {
+	for(int i = 0; i < dlen; i++) {
+		printf("%02x ", *(data++));
+		if (i%width == width-1) putchar('\n'); 
+	}
+	putchar('\n');
+}
+
+void transposematrix(unsigned char* src, unsigned char* dst, int width, int height) {
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			dst[y * width + x] = *(src++);
+		}
+	}
+	putchar('\n');
+}
 
 void caesar(char* src, char* dst, char rotdist, size_t length) {
 	while(length --> 0) {
@@ -83,4 +127,11 @@ void xor(char* buf, char* xor_key, size_t length, size_t key_length) {
 		
 	}
 }
+
+void fixed_xor(unsigned char* src, unsigned char* dst, unsigned char xor_key, size_t length) {
+	while(length --> 0) {
+		*(dst++) = *(src++) ^ xor_key;
+	}
+}
+
 
