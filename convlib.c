@@ -6,19 +6,20 @@
 #define hex2nibble(hexdigit) ((((hexdigit) >= 'A') ? ((hexdigit) - 'A' + 0xA) : ((hexdigit) - '0')) & 0x0f)
 #define nibble2hex(val) (((val) >= 0x0A) ? ((val) + 'A' - 0xA) : ((val) + '0'))
 
-void hex2bin(char* src, char* dst, size_t output_length) {
+void hex2bin(char* src, void* dst, size_t output_length) {
 	while(output_length --> 0) {
 		char high = hex2nibble(*src) << 4;
 		src++;
-		*(dst++) = high | hex2nibble(*src);
+		*((unsigned char*)dst++) = high | hex2nibble(*src);
 		src++;
 	}
 }
-void bin2hex(char* src, char* dst, size_t input_length) {
+void bin2hex(void* src, char* dst, size_t input_length) {
+	unsigned char* SRC=src;
 	while(input_length --> 0) {
-		*(dst++) = nibble2hex(*src >> 4);
-		*(dst++) = nibble2hex(*src & 0x0f);
-		src++;
+		*(dst++) = nibble2hex(*SRC >> 4);
+		*(dst++) = nibble2hex(*SRC & 0x0f);
+		SRC++;
 	}
 	*(dst++) = 0;
 }
