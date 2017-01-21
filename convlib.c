@@ -59,3 +59,17 @@ void bin2base64(char* src, char* dst, ssize_t input_length) {
 }
 
 
+
+void caesar(char* src, char* dst, char rotdist, size_t length) {
+	while(length --> 0) {
+		if (*src >='a' && *src <= 'z') {
+			*dst = *src + rotdist;
+			if (*dst > 'z') *dst -= 26;
+		} else if (*src >='A' && *src <= 'Z') {
+			*dst = *src + rotdist;
+			if (*dst > 'Z') *dst -= 26;
+		} else *dst = *src;
+		dst++; src++;
+	}
+}
+
