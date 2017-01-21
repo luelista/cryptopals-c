@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
 			hex2bin(optarg, probdist, 256);
 			break;
 		case 'k':
-			key = (char)(optarg);
+			key = (unsigned char)strtol(optarg, NULL, 0);
 			break;
 		case 'd':
 			dlen = strlen(optarg)/2;
@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
 			fixed_xor(data, dst, key, dlen);
 			float fdev = fdist_dev(dst, probdist, dlen);
 			if (fdev <= maxfdev) {
-				printf("%f\t%x\t", fdev, key);
+				printf("%f\t%d\t", fdev, key);
 				printout(outstyle, dst, dlen);
 				printf("\n");
 			}

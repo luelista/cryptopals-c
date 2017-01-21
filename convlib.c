@@ -74,3 +74,13 @@ void caesar(char* src, char* dst, char rotdist, size_t length) {
 	}
 }
 
+void xor(char* buf, char* xor_key, size_t length, size_t key_length) {
+	size_t key_idx = 0;
+	while(length --> 0) {
+		*buf = *buf ^ xor_key[key_idx++];
+		if (key_idx == key_length) key_idx = 0;
+		buf++;
+		
+	}
+}
+
